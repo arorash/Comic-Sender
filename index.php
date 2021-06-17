@@ -27,7 +27,7 @@ if(isset($_POST['submit'])){
                 if($iquery){
 
                     $subject = "Verification Email";
-                    $body = "Hi,<br> Click the link to verify the account:<br><br> <a href='http://localhost:7882/XKCD_Project/activate.php?token=$token'>Click Me</a> ";
+                    $body = "Hi,<br> Click the link to verify the account:<br><br> <a href='https://xckd-comic-project.herokuapp.com/activate.php?token=$token'>Click Me</a> ";
 
                     $mail = new PHPMailer();
                     $mail->isSMTP();
