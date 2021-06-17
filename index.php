@@ -1,4 +1,11 @@
 <?php
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require_once "PHPMailer/PHPMailer.php";
+require_once "PHPMailer/SMTP.php";
+require_once "PHPMailer/Exception.php";
+
 include 'dbcon.php';
 
 $msg = "";
@@ -18,14 +25,29 @@ if(isset($_POST['submit'])){
                 $insertquery = "insert into registration(email,token,status) values('$email','$token','inactive')";
                 $iquery = mysqli_query($con,$insertquery);
                 if($iquery){
-                    $to_email = "$email";
+
                     $subject = "Verification Email";
                     $body = "Hi,<br> Click the link to verify the account:<br><br> <a href='http://localhost:7882/XKCD_Project/activate.php?token=$token'>Click Me</a> ";
-                    $sender = "Content-type:text/html;charset=UTF-8" . "\r\n" . "From: shashankprofessional9@gmail.com";
-                    if(mail($to_email,$subject,$body,$sender)){
-                        $msg = "Verification link is send to $email";
-                    }else{
-                        $msg = "Some Error Occured.";
+
+                    $mail = new PHPMailer();
+                    $mail->isSMTP();
+                    $mail->Host = "smtp.gmail.com";
+                    $mail->SMTPAuth = true;
+                    $mail->Username = "shashankprofessional9@gmail.com";
+                    $mail->Password = "Sha1Sha2nk@78";
+                    $mail->Port = 465;
+                    $mail->SMTPSecure = "ssl";
+                    $mail->isHTML(true);
+                    $mail->From = "shashankprofessional9@gmail.com";
+                    $mail->FromName = "XCKD COMIC PROJECT";
+                    $mail->addAddress("$email");
+                    $mail->Subject = $subject;
+                    $mail->Body =$body;
+                    try{
+                        $mail->send();
+                        $msg = "Verification link send to $email";
+                    }catch(Exception $e){
+                        $msg = "Error occured.";
                     }
                 }else{
                     $msg = "Some Error Occured";
