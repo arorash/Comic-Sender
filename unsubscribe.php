@@ -1,24 +1,24 @@
 <?php
-    include 'dbcon.php';
-    $msg = "";
+    include __DIR__ .'/dbcon.php';
+    $msg = '';
     if(isset($_GET['token'])){
-        $token = $_GET['token'];
+        $token = filter_input(INPUT_GET, 'token', FILTER_SANITIZE_ENCODED);
         $checkquery = "select * from registration where token='$token' and status='unsubscribe'";
         $cquery = mysqli_query($con,$checkquery);
         if(mysqli_num_rows($cquery)>0){
-            $msg = "This link is not valid now.";
+            $msg = 'This link is not valid now.';
         }else{
             $updatequery = "update registration set status='unsubscribe' where token='$token' ";
             $uquery = mysqli_query($con,$updatequery);
             if($uquery){
-                $msg = "You have successfully unsubscribed.";
+                $msg = 'You have successfully unsubscribed.';
             }else{
-                $msg = "Some Error Occured.";
+                $msg = 'Some Error Occured.';
             }
         }
 
     }else{
-        $msg="Link is not valid.";
+        $msg='Link is not valid.';
     }
 ?>
 

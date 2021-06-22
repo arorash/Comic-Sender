@@ -2,44 +2,47 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require_once "PHPMailer/PHPMailer.php";
-require_once "PHPMailer/SMTP.php";
-require_once "PHPMailer/Exception.php";
+require_once __DIR__ .'/PHPMailer/PHPMailer.php';
+require_once __DIR__ .'/PHPMailer/SMTP.php';
+require_once __DIR__ .'/PHPMailer/Exception.php';
 
-include 'dbcon.php';
+include __DIR__ .'/dbcon.php';
 
-$msg = "";
+$msg = '';
 if(isset($_POST['submit'])){
     if(isset($_POST['email'])){
         $email = mysqli_real_escape_string($con,$_POST['email']);
-        if($email==""){
-            $msg = "Enter the email.";
+        if($email==''){
+            $msg = 'Enter the email.';
         }else{
             $email_check = "select * from registration where email='$email'";
             $query = mysqli_query($con,$email_check);
             $emailcount = mysqli_num_rows($query);
             if($emailcount>0){
-                $msg = "Email already registered.";
+                $msg = 'Email already registered.';
             }else{
                 $token = bin2hex(random_bytes(15));
                 $insertquery = "insert into registration(email,token,status) values('$email','$token','inactive')";
                 $iquery = mysqli_query($con,$insertquery);
                 if($iquery){
 
-                    $subject = "Verification Email";
-                    $body = "Hi,<br> Click the link to verify the account:<br><br> <a href='https://xckd-comic-project.herokuapp.com/activate.php?token=$token'>Click Me</a> ";
+                    $subject = 'Verification Email';
+                    $href = 'http://'.$_SERVER['HTTP_HOST'].'/activate.php?token='.$token;
+                    echo $href;
+
+                    $body = "Hi,<br> Click the link to verify the account:<br><br> <a href='$href'>Click Me</a> ";
 
                     $mail = new PHPMailer();
                     $mail->isSMTP();
-                    $mail->Host = "smtp.gmail.com";
+                    $mail->Host = 'smtp.gmail.com';
                     $mail->SMTPAuth = true;
-                    $mail->Username = "shashankprofessional9@gmail.com";
-                    $mail->Password = "Sha1Sha2nk@78";
+                    $mail->Username = 'shashankprofessional9@gmail.com';
+                    $mail->Password = 'Sha1Sha2nk@78';
                     $mail->Port = 465;
-                    $mail->SMTPSecure = "ssl";
+                    $mail->SMTPSecure = 'ssl';
                     $mail->isHTML(true);
-                    $mail->From = "shashankprofessional9@gmail.com";
-                    $mail->FromName = "XCKD COMIC PROJECT";
+                    $mail->From = 'shashankprofessional9@gmail.com';
+                    $mail->FromName = 'XCKD COMIC PROJECT';
                     $mail->addAddress("$email");
                     $mail->Subject = $subject;
                     $mail->Body =$body;
@@ -47,10 +50,10 @@ if(isset($_POST['submit'])){
                         $mail->send();
                         $msg = "Verification link send to $email";
                     }catch(Exception $e){
-                        $msg = "Error occured.";
+                        $msg = 'Error occured.';
                     }
                 }else{
-                    $msg = "Some Error Occured";
+                    $msg = 'Some Error Occured';
                 }
             }
         }

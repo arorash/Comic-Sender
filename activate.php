@@ -1,24 +1,24 @@
 <?php
-    include 'dbcon.php';
-    $msg = "";
+    include __DIR__ .'/dbcon.php';
+    $msg = '';
     if(isset($_GET['token'])){
-        $token = $_GET['token'];
+        $token = filter_input(INPUT_GET, 'token', FILTER_SANITIZE_ENCODED);
         $checkquery = "select * from registration where token='$token' and (status='active' or status='unsubscribe')";
         $cquery = mysqli_query($con,$checkquery);
         if(mysqli_num_rows($cquery)>0){
-            $msg = "This link is not valid now.";
+            $msg = 'This link is not valid now.';
         }else{
             $updatequery = "update registration set status='active' where token='$token' ";
             $uquery = mysqli_query($con,$updatequery);
             if($uquery){
-                $msg = "Your account is activated. Please enjoy your comics.";
+                $msg = 'Your account is activated. Please enjoy your comics.';
             }else{
-                $msg = "Some Error Occured.";
+                $msg = 'Some Error Occured.';
             }
         }
-        
+
     }else{
-        $msg="Link is not valid.";
+        $msg='Link is not valid.';
     }
 ?>
 
@@ -35,12 +35,12 @@
 <body>
     <div class="container">
         <h3>XKCD Comics</h3>
-        
+
         <?php
             echo "<br><p style='color:white;background-color:green'>$msg</p>";
         ?>
 
-        
+
     </div>
 
 </body>
