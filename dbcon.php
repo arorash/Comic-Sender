@@ -6,10 +6,5 @@
 
     $con = mysqli_connect($server,$user,$pass,$db);
 
-    if($con){
-        echo "done";
-    }else{
-        echo "not";
-    }
 
 ?>

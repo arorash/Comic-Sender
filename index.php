@@ -36,8 +36,8 @@ if(isset($_POST['submit'])){
                     $mail->isSMTP();
                     $mail->Host = 'smtp.gmail.com';
                     $mail->SMTPAuth = true;
-                    $mail->Username = 'shashankprofessional9@gmail.com';
-                    $mail->Password = 'Sha1Sha2nk@78';
+                    $mail->Username = getenv('EMAIL_ID');
+                    $mail->Password = getenv('EMAIL_PASS');
                     $mail->Port = 465;
                     $mail->SMTPSecure = 'ssl';
                     $mail->isHTML(true);
