@@ -1,11 +1,15 @@
 <?php
-    $server = 'us-cdbr-east-04.cleardb.com';
-    $user = 'b1d2893113532f';
-    $pass = '70678d3b';
-    $db = 'heroku_6f831fa5ac72ac8';
+    $server = getenv('HOST');
+    $user = getenv('USER_ID');
+    $pass = getenv('PASSWORD');
+    $db = getenv('DATABASE');
 
     $con = mysqli_connect($server,$user,$pass,$db);
 
-
+    if($con){
+        echo "done";
+    }else{
+        echo "not";
+    }
 
 ?>
