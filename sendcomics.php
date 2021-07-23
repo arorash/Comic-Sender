@@ -18,7 +18,7 @@
     $json2 = json_decode($json2);
 
 
-    $selectquery = "select * from registration where status='active'";
+    $selectquery = 'select * from registration where status="active"';
     $squery = mysqli_query($con,$selectquery);
 
     while($row = mysqli_fetch_assoc($squery)){
@@ -37,7 +37,7 @@
         $mail->Port = 465;
         $mail->SMTPSecure = 'ssl';
         $mail->isHTML(true);
-        $mail->From = 'shashankprofessional9@gmail.com';
+        $mail->From = getenv('EMAIL_ID');
         $mail->FromName = 'XCKD COMIC PROJECT';
         $mail->addAddress("$to_");
         $mail->Subject = $subject;

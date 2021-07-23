@@ -41,7 +41,7 @@ if(isset($_POST['submit'])){
                     $mail->Port = 465;
                     $mail->SMTPSecure = 'ssl';
                     $mail->isHTML(true);
-                    $mail->From = 'shashankprofessional9@gmail.com';
+                    $mail->From = getenv('EMAIL_ID');
                     $mail->FromName = 'XCKD COMIC PROJECT';
                     $mail->addAddress("$email");
                     $mail->Subject = $subject;
